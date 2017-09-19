@@ -1,0 +1,3 @@
+bun:
+  spec:
+    local: [ lxc/shared/home, usr/src/Config, usr/local/etc ]
