@@ -1,0 +1,7 @@
+bun:
+  spec:
+    squeezebox: [
+      etc/logitechmediaserver,
+      var/lib/logitechmediaserver/ClientPlaylists
+      var/lib/logitechmediaserver/Plugins
+      ]
