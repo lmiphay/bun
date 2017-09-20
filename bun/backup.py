@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 import os
-import pprint
 import time
-import yaml
 
-from invoke import Collection, task
-import invoke
+from invoke import task
 
 def today(ctx):
     return time.strftime(ctx.bun.timespec)
@@ -46,18 +42,3 @@ def backup(ctx, target=None):
             backupspec(ctx, specname)
     else:
         backupspec(ctx, target)
-
-@task
-def showconfig(ctx):
-    pprint.pprint(ctx.bun)
-
-ns = Collection(tar, backupspec, backup, showconfig, yamlconfig, defaultconfig)
-
-BUNCONFIG = invoke.config.copy_dict(DEFAULT_CONFIG)
-
-if os.path.isfile('tests/bun.yaml'):
-    invoke.config.merge_dicts(BUNCONFIG, yaml.load(open('tests/bun.yaml')))
-elif os.path.isfile('/etc/oam/conf.d/bun.yaml'):
-    invoke.config.merge_dicts(BUNCONFIG, yaml.load(open('/etc/oam/conf.d/bun.yaml')))
-
-ns.configure(BUNCONFIG)
