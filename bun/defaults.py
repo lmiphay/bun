@@ -19,7 +19,8 @@ DEFAULT_CONFIG = {
                 'var/db/pkg',
                 'usr/src/kernel-config.git',
                 'var/lib/layman/installed.xml',
-                'var/lib/portage'
+                'var/lib/portage',
+                'usr/local/portage'
             ],
             'sys': [
                 'boot',
