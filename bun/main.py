@@ -9,8 +9,8 @@ class BunConfig(invoke.Config):
 
     @staticmethod
     def global_defaults():
-        return merge_dicts(invoke.Config.global_defaults(),
-                           bun.defaults.settings())
+        return invoke.config.merge_dicts(invoke.Config.global_defaults(),
+                                         bun.defaults.settings())
 
 program = invoke.Program(config_class=BunConfig,
                          namespace=bun.config.collection(),
