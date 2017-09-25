@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from distutils.core import setup
-from distutils.command.install_data import install_data
+from setuptools import setup
 
 setup(name='bun',
       version='0.0.1',
       description='bun implementation',
+      license='GPL-2',
       author='Paul Healy',
       url='https://github.com/lmiphay/bun',
       packages=[
