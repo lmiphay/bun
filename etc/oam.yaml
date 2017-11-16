@@ -1,0 +1,7 @@
+bun:
+  spec:
+    oam: [
+      etc/oam,
+      usr/src/kernel-config.git,
+      var/db/oam
+      ]

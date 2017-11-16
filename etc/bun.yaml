@@ -1,0 +1,15 @@
+bun:
+  backup_dir: /backup           # location we backup to
+  default: [                    # default 'spec sets' to backup; see spec dict later on
+    homes,
+    bun
+    ]
+  spec:                         # directory/file sets that can be backed up
+    homes: [                    # unique token to identify the set
+      home,
+      root
+    ]
+    bun: [
+      etc/bun,
+      etc/oam/conf.d/bun.yaml
+      ]

@@ -2,6 +2,6 @@
 Changelog
 =========
 
-0.0.1
+0.1.0
 -----
-* [feature] in progress
+* [feature] backing up, verifying... etc

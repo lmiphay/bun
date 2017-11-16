@@ -1,28 +1,69 @@
 # -*- coding: utf-8 -*-
+"""
+Implements configuration discovery for bun
+"""
 
+from __future__ import print_function
+import glob
 import os
 import yaml
 import invoke
+from invoke import task
 
 import bun.backup
 import bun.defaults
 
 
+def add_packages(bun_config, directory):
+    """
+    if directory exists then merge all configuration into the bun_config dict
+
+    :param bun_config: existing dict config to merge new config into
+    :param directory: directory which holds config to merge
+    :return: merged dict of the original config plus config from directory
+    """
+    if os.path.isdir(directory):
+        for config_file in glob.glob('{}/*.yaml'.format(directory)):
+            invoke.config.merge_dicts(bun_config, yaml.load(open(config_file)))
+    return bun_config
+
+
 def settings():
-    bunconfig = invoke.config.copy_dict(bun.defaults.settings())
+    """
+    generate a consolidated set of configuration for bun - if BUN_CONFIG_DIR is set
+    then only read configuration from there; otherwise read config from the
+    directory /etc/bun and and the file /etc/oam/conf.d/bun.yaml (if it exists)
 
-    if os.path.isfile('tests/bun.yaml'):
-        invoke.config.merge_dicts(bunconfig, yaml.load(open('tests/bun.yaml')))
-    elif os.path.isfile('/etc/bun/bun.yaml'):
-        invoke.config.merge_dicts(bunconfig, yaml.load(open('/etc/bun/bun.yaml')))
-    elif os.path.isfile('/etc/oam/conf.d/bun.yaml'):
-        invoke.config.merge_dicts(bunconfig, yaml.load(open('/etc/oam/conf.d/bun.yaml')))
+    :return: a dict holding bun configuration
+    """
+    bun_config = invoke.config.copy_dict(bun.defaults.settings())
 
-    return bunconfig
+    if 'BUN_CONFIG_DIR' in os.environ:
+        add_packages(bun_config, os.environ('BUN_CONFIG_DIR'))
+    else:
+        if os.path.isdir('/etc/bun'):
+            add_packages(bun_config, '/etc/bun')
+            if os.path.isfile('/etc/oam/conf.d/bun.yaml'):
+                invoke.config.merge_dicts(bun_config, yaml.load(open('/etc/oam/conf.d/bun.yaml')))
+
+    return bun_config
+
 
 def collection():
-    ns = invoke.Collection(bun.backup, bun.defaults)
+    """Return an invoke collection for bun"""
+    ns = invoke.Collection(bun.backup, bun.config, bun.defaults)  # pylint: disable=invalid-name
 
     ns.configure(settings())
 
     return ns
+
+
+@task(default=True)
+def config(ctx):
+    """
+    dump configuration in effect to the console
+
+    :param ctx: invoke context
+    """
+    print(yaml.dump(ctx.bun, default_flow_style=False))
+    # print(ctx.bun.backup_dir)

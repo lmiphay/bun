@@ -1,0 +1,9 @@
+bun:
+  spec:
+    sys: [
+      boot,
+      etc,
+      lib/modules,
+      usr/src/linux/.config,
+      var/spool/cron/crontabs
+      ]

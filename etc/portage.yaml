@@ -1,0 +1,11 @@
+bun:
+  spec:
+    portage: [
+      etc/portage,
+      var/db/pkg,
+      var/lib/layman/installed.xml,
+      var/lib/portage,
+      usr/local/portage,
+      var/cache/edb/mtimedb,
+      var/lib/gentoo
+      ]

@@ -1,0 +1,29 @@
+bun:
+  spec:
+    root: [
+      bin,
+      boot,
+      etc,
+      lib32,
+      lib64,
+      root,
+      sbin,
+      usr,
+      var/account,
+      var/db/Makefile,
+      var/db/smartmontools,
+      var/empty,
+      var/lib/alsa,
+      var/lib/dhcpcd,
+      var/lib/gentoo,
+      var/lib/init.d,
+      var/lib/ip6tables,
+      var/lib/iptables,
+      var/lib/misc,
+      var/lib/nfs,
+      var/lib/syslog-ng,
+      var/lib/udisks,
+      var/lib/udisks2,
+      var/spool,
+      var/www
+      ]
