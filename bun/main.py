@@ -22,15 +22,16 @@ class BunConfig(invoke.Config):
 
 class BunProgram(invoke.Program):
     """
+
     Specialisation of Program for bun.
     """
 
     def core_args(self):
         core_args = super(BunProgram, self).core_args()
-        extra_args = [
-            invoke.Argument(names=('pretend', 'dry-run'),
-                            help="Show the commands which would be executed, but don't actually execute them"),
-        ]
+        extra_args = []
+        #    invoke.Argument(names=('pretend', 'dry-run'),
+        #                    help="Show the commands which would be executed, but don't actually execute them"),
+        #  ]
         return core_args + extra_args
 
 

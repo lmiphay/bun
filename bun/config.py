@@ -51,7 +51,15 @@ def settings():
 
 def collection():
     """Return an invoke collection for bun"""
-    ns = invoke.Collection(bun.backup, bun.config, bun.defaults)  # pylint: disable=invalid-name
+    # pylint: disable=invalid-name
+    ns = invoke.Collection(
+        bun.backup.backup,
+        bun.backup.pretend,
+        bun.backup.verify,
+        bun.backup.watch,
+        bun.backup.restore,
+        bun.config,
+        bun.defaults)
 
     ns.configure(settings())
 

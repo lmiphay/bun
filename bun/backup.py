@@ -158,6 +158,7 @@ class Bun(object):
         """
         for spec_name, paths in self.paths(target):
             print(self.pipeline(spec_name, paths))
+        return 0
 
     def verify(self, target):
         """
@@ -194,15 +195,15 @@ class Bun(object):
                 print('{}: '.format(tarball), end='')
                 sys.stdout.flush()
                 if os.path.exists(tarball):
-                    if not self.ctx.run('echo tar -xf {}'.format(tarball)):
+                    if not self.ctx.run('tar -xf {}'.format(tarball)):
                         print(' FAILED')
                         result = 1
 
         return result
 
 
-@task(default=True, iterable=['target'])
-def bun(ctx, target):
+@task(default=True, iterable=['target'], aliases=('bun',))
+def backup(ctx, target):
     """
     back-up now
     :param ctx: invoke context

@@ -5,7 +5,7 @@ import unittest
 
 import mock
 
-from invoke import MockContext
+from invoke import MockContext, Result
 
 from bun.backup import Bun, opt, now, latest_backup
 
@@ -94,3 +94,107 @@ class BunTest(unittest.TestCase):
         })})
         self.assertEqual(Bun(ctx, 'footime').pipeline('aspec', ['/a/b', '/fg']),
                          'anice tar -C /root --bar -cf - /a/b /fg | zip -9 - | tee >(cksum>/bun/footime/aspec.tar.asuf.cksum) >/bun/footime/aspec.tar.asuf')
+
+    def test_paths(self):
+        ctx = MockContext(config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'checksum': 'cksum',
+            'compress': 'zip -9',
+            'default': ['all'],
+            'nice': 'anice',
+            'suffix': 'asuf',
+            'start_dir': '/root',
+            'tar_opts': ['--bar'],
+            'spec': {
+                'aspec': ['/a/b', '/fg'],
+                'bspec': ['/d/e', '/hi']
+            }
+        })})
+        self.assertEqual(list(Bun(ctx, 'footime').paths([])), [('aspec', ['/a/b', '/fg']), ('bspec', ['/d/e', '/hi'])])
+
+    def test_only_existing(self):
+        ctx = MockContext(config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'start_dir': '/bunny'
+        })})
+        with mock.patch('os.path.exists') as mock_os_path_exists:
+            mock_os_path_exists.side_effect = [False, True, True]
+            self.assertEqual(Bun(ctx, 'footime').only_existing(['/x', '/y', '/z']), ['/y', '/z'])
+
+    def test_backup(self):
+        ctx = MockContext(run=Result("ok\n"),
+                          config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'checksum': 'cksum',
+            'compress': 'zip -9',
+            'default': ['all'],
+            'nice': 'anice',
+            'suffix': 'asuf',
+            'start_dir': '/root',
+            'tar_opts': ['--bar'],
+            'spec': {
+                'aspec': ['/a/b', '/fg'],
+                'bspec': ['/d/e', '/hi']
+            }
+        })})
+        with mock.patch('os.path.exists') as mock_pathexists:
+            mock_pathexists.return_value = False
+            with mock.patch('os.makedirs') as mock_makedirs:
+                self.assertEqual(Bun(ctx, 'footime').backup(['bspec']), 0)
+
+    def test_pretend(self):
+        ctx = MockContext(config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'checksum': 'cksum',
+            'compress': 'zip -9',
+            'default': ['all'],
+            'nice': 'anice',
+            'suffix': 'asuf',
+            'start_dir': '/root',
+            'tar_opts': ['--bar'],
+            'spec': {
+                'aspec': ['/a/b', '/fg'],
+                'bspec': ['/d/e', '/hi']
+            }
+        })})
+        self.assertEqual(Bun(ctx, 'footime').pretend(['aspec']), 0)
+
+    def test_verify(self):
+        ctx = MockContext(run=Result("ok\n"),
+                          config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'checksum': 'cksum',
+            'compress': 'zip -9',
+            'default': ['all'],
+            'nice': 'anice',
+            'suffix': 'asuf',
+            'start_dir': '/root',
+            'tar_opts': ['--bar'],
+            'spec': {
+                'aspec': ['/a/b', '/fg'],
+                'bspec': ['/d/e', '/hi']
+            }
+        })})
+        with mock.patch('os.path.exists') as mock_pathexists:
+            mock_pathexists.return_value = True
+            self.assertEqual(Bun(ctx, 'footime').verify(['bspec']), 0)
+
+    def test_restore(self):
+        ctx = MockContext(run=Result("ok\n"),
+                          config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'checksum': 'cksum',
+            'compress': 'zip -9',
+            'default': ['all'],
+            'nice': 'anice',
+            'suffix': 'asuf',
+            'start_dir': '/root',
+            'tar_opts': ['--bar'],
+            'spec': {
+                'aspec': ['/a/b', '/fg'],
+                'bspec': ['/d/e', '/hi']
+            }
+        })})
+        with mock.patch('os.path.exists') as mock_pathexists:
+            mock_pathexists.return_value = True
+            self.assertEqual(Bun(ctx, 'footime').restore('/restore_location', ['bspec']), 0)
