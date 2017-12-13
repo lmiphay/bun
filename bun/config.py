@@ -32,7 +32,7 @@ def settings():
     """
     generate a consolidated set of configuration for bun - if BUN_CONFIG_DIR is set
     then only read configuration from there; otherwise read config from the
-    directory /etc/bun and and the file /etc/oam/conf.d/bun.yaml (if it exists)
+    directory /etc/bun and the file /etc/oam/conf.d/bun.yaml (if it exists)
 
     :return: a dict holding bun configuration
     """
