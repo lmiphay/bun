@@ -18,6 +18,7 @@ setup(name='bun',
       data_files=[
             ('/etc/bun', [
                   'etc/bun.yaml',
+                  'etc/homeassistant.yaml',
                   'etc/oam.yaml',
                   'etc/portage.yaml',
                   'etc/squeezebox.yaml',

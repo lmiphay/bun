@@ -1,0 +1,6 @@
+bun:
+  spec:
+    homeassistant: [
+      etc/homeassistant,
+      etc/conf.d/homeassistant
+      ]
