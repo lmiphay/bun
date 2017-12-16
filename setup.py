@@ -19,6 +19,7 @@ setup(name='bun',
             ('/etc/bun', [
                   'etc/bun.yaml',
                   'etc/homeassistant.yaml',
+                  'etc/letsencrypt.yaml',
                   'etc/oam.yaml',
                   'etc/portage.yaml',
                   'etc/squeezebox.yaml',
