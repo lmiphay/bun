@@ -198,3 +198,23 @@ class BunTest(unittest.TestCase):
         with mock.patch('os.path.exists') as mock_pathexists:
             mock_pathexists.return_value = True
             self.assertEqual(Bun(ctx, 'footime').restore('/restore_location', ['bspec']), 0)
+
+    def test_check(self):
+        ctx = MockContext(run=Result("ok\n"),
+                          config={'bun': MockContext(config={
+            'backup_dir': '/bun',
+            'checksum': 'cksum',
+            'compress': 'zip -9',
+            'default': ['all'],
+            'nice': 'anice',
+            'suffix': 'asuf',
+            'start_dir': '/root',
+            'tar_opts': ['--bar'],
+            'spec': {
+                'aspec': ['/a/b', '/fg'],
+                'bspec': ['/d/e', '/hi']
+            }
+        })})
+        with mock.patch('os.path.exists') as mock_pathexists:
+            mock_pathexists.return_value = True
+            self.assertEqual(Bun(ctx, 'footime').check('/altbackup'), 0)

@@ -201,6 +201,26 @@ class Bun(object):
 
         return result
 
+    def check(self, directory):
+        """
+        Foreach tarball in directory verify check sums
+
+        :param directory: directory containing tarballs to validate checksums of.
+        """
+        result = 0
+
+        for tarball in glob.glob('{directory}/*.{suffix}'.format(directory=directory, **self.ctx.bun)):
+            if os.path.exists('{}.{}'.format(tarball, self.ctx.bun.checksum)):
+                print('{} '.format(tarball), end='')  # , flush=True
+                sys.stdout.flush()
+                if not self.ctx.run('{checksum} -c {tarball}.{checksum} < {tarball}'.format(tarball=tarball,
+                                                                                            **self.ctx.bun),
+                                    echo=False):
+                    print(' FAILED')
+                    result = 1
+
+        return result
+
 
 @task(default=True, iterable=['target'], aliases=('bun',))
 def backup(ctx, target):
@@ -256,3 +276,13 @@ def restore(ctx, timestamp, location, target):
     :param target: spec name(s) whose tarballs will be extracted
     """
     return Bun(ctx, timestamp).restore(location, target)
+
+
+@task
+def check(ctx, directory):
+    """
+    verify the check sums on tarballs in the specified directory
+    :param ctx: invoke context
+    :param directory: directory containing tarballs
+    """
+    return Bun(ctx, now(ctx)).check(directory)

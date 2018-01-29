@@ -28,5 +28,9 @@ Verify
     -: OK
     #
 
-* An update to bun will allow the user to the verify all
-  tarballs in a specified directory.
+* The check subcommand can be used to verify all
+  tarballs in a specified directory::
+
+    # bun check /local/remote-backup
+    /local/remote-backup/homes.tar.xz -: OK
+    #
