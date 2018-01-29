@@ -228,7 +228,7 @@ def verify(ctx, timestamp, target):
     verify the check sums on tarballs which have been already created
     :param ctx: invoke context
     :param timestamp: the timestamp of the targets to verify
-    :param target: 0 or more names of spec sets to backup
+    :param target: 0 or more names of spec sets to verify
     """
     return Bun(ctx, timestamp).verify(target)
 
