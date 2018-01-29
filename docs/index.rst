@@ -31,6 +31,7 @@ See :doc:`changelog` for changes in this version.
 
    quickstart
    config
+   verify
    api
    changelog
 

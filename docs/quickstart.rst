@@ -10,6 +10,10 @@ Quickstart
 
     app-oam/bun ~amd64
 
+  Add app-oam as a category (if it is not already)::
+
+    # echo app-oam >>/etc/portage/categories
+
   Then::
 
     # emerge app-oam/bun
@@ -30,10 +34,10 @@ Quickstart
 
     # bun watch
 
-* At some later point verify the checksums of the backup::
+* At some later point verify the checksums of a specified backup::
 
     # bun verify --timestamp=20171915-154431
 
-* Restore a backup to a specified location::
+* Restore a specific backup to a specified location::
 
     # bun restore --timestamp=20171915-154431 --location=/var/tmp
