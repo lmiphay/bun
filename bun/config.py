@@ -54,10 +54,12 @@ def collection():
     # pylint: disable=invalid-name
     ns = invoke.Collection(
         bun.backup.backup,
+        bun.backup.check,
+        bun.backup.ignore,
         bun.backup.pretend,
+        bun.backup.restore,
         bun.backup.verify,
         bun.backup.watch,
-        bun.backup.restore,
         bun.config,
         bun.defaults)
 
