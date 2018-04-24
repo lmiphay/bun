@@ -14,7 +14,11 @@ SHELL = '/bin/bash'
 PIPELINE = '{nice} {tar} {compress} {check_sum} {write}'
 TARBALL = '{backup_dir}/{timestamp}/{spec_name}.tar.{suffix}{extra_suffix}'
 DESTINATION = '>{tarball}'
-
+CACHEDIR_SIGNATURE = """Signature: 8a477f597d28d172789f06886806bc55
+# This file is a cache directory tag created by: bun
+# For information about cache directory tags, see:
+#	http://www.brynosaurus.com/cachedir/
+"""
 
 def opt(cond, true_return):
     """helper to optionally add commands to a commaned pipeline if cond is not the empty string"""
@@ -286,3 +290,17 @@ def check(ctx, directory):
     :param directory: directory containing tarballs
     """
     return Bun(ctx, now(ctx)).check(directory)
+
+
+@task
+def ignore(ctx, directory):
+    """
+    mark the specified directory as ignored by dropping a standard
+    CACHEDIR.TAG directory into it
+
+    :param ctx: invoke context
+    :param directory: directory to be ignored
+    """
+    with open('{}/CACHEDIR.TAG'.format(directory), 'w') as f:
+        f.write(CACHEDIR_SIGNATURE)
+    return 0
