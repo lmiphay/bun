@@ -1,5 +1,6 @@
 bun:
   spec:
     gitea: [
+      etc/gitea/app.ini,
       var/lib/gitea/conf/app.ini
       ]
