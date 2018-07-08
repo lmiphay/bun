@@ -18,6 +18,7 @@ setup(name='bun',
       data_files=[
             ('/etc/bun', [
                   'etc/bun.yaml',
+                  'etc/gitea.yaml',
                   'etc/homeassistant.yaml',
                   'etc/letsencrypt.yaml',
                   'etc/nginx.yaml',
