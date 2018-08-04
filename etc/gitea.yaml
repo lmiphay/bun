@@ -2,5 +2,7 @@ bun:
   spec:
     gitea: [
       etc/gitea/app.ini,
-      var/lib/gitea/conf/app.ini
+      var/lib/gitea/conf/app.ini,
+      var/lib/gitea/data,
+      var/lib/gitea/gitea-repositories
       ]
