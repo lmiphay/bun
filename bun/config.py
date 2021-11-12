@@ -24,7 +24,8 @@ def add_packages(bun_config, directory):
     """
     if os.path.isdir(directory):
         for config_file in glob.glob('{}/*.yaml'.format(directory)):
-            invoke.config.merge_dicts(bun_config, yaml.load(open(config_file)))
+            with open(config_file, encoding='utf-8') as package_yaml:
+                invoke.config.merge_dicts(bun_config, yaml.load(package_yaml))
     return bun_config
 
 
@@ -44,7 +45,8 @@ def settings():
         if os.path.isdir('/etc/bun'):
             add_packages(bun_config, '/etc/bun')
             if os.path.isfile('/etc/oam/conf.d/bun.yaml'):
-                invoke.config.merge_dicts(bun_config, yaml.load(open('/etc/oam/conf.d/bun.yaml')))
+                with open('/etc/oam/conf.d/bun.yaml', encoding='utf-8') as bun_yaml:
+                    invoke.config.merge_dicts(bun_config, yaml.load(bun_yaml))
 
     return bun_config
 

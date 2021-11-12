@@ -20,6 +20,7 @@ CACHEDIR_SIGNATURE = """Signature: 8a477f597d28d172789f06886806bc55
 #	http://www.brynosaurus.com/cachedir/
 """
 
+
 def opt(cond, true_return):
     """helper to optionally add commands to a commaned pipeline if cond is not the empty string"""
     return true_return if cond != '' else ''
@@ -35,7 +36,7 @@ def latest_backup(ctx):
     return max(glob.glob('{}/*'.format(ctx.bun.backup_dir)), key=os.path.getctime)
 
 
-class Bun(object):
+class Bun:
     """
     Backup path(s) based on configuration.
     """
@@ -123,7 +124,7 @@ class Bun(object):
         if len(target) == 0:
             target = self.ctx.bun.default
         if target == ['all']:
-            target = [key for key in self.ctx.bun.spec]
+            target = list(self.ctx.bun.spec)
         for spec_name in target:
             if spec_name in self.ctx.bun.spec:
                 yield (spec_name, self.ctx.bun.spec[spec_name])
@@ -293,7 +294,7 @@ def check(ctx, directory):
 
 
 @task
-def ignore(ctx, directory):
+def ignore(ctx, directory):  # pylint: disable=unused-argument
     """
     mark the specified directory as ignored by dropping a standard
     CACHEDIR.TAG directory into it
@@ -301,6 +302,6 @@ def ignore(ctx, directory):
     :param ctx: invoke context
     :param directory: directory to be ignored
     """
-    with open('{}/CACHEDIR.TAG'.format(directory), 'w') as f:
-        f.write(CACHEDIR_SIGNATURE)
+    with open('{}/CACHEDIR.TAG'.format(directory), 'w', encoding='utf-8') as cache_file:
+        cache_file.write(CACHEDIR_SIGNATURE)
     return 0

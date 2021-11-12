@@ -27,7 +27,7 @@ class BunProgram(invoke.Program):
     """
 
     def core_args(self):
-        core_args = super(BunProgram, self).core_args()
+        core_args = super().core_args()
         extra_args = []
         #    invoke.Argument(names=('pretend', 'dry-run'),
         #                    help="Show the commands which would be executed, but don't actually execute them"),

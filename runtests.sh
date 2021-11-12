@@ -1,11 +1,13 @@
 #!/bin/bash
 
-python -m unittest discover -s tests -p 'test*.py'
+PY=3.9
+
+python${PY} -m unittest discover -s tests -p 'test*.py'
 result=$?
 
-coverage2 run -m unittest discover -s tests -p 'test*.py'
-coverage2 report --show-missing --fail-under=80
-coverage2 html --directory=coverage.report
+coverage-${PY} run -m unittest discover -s tests -p 'test*.py'
+coverage-${PY} report --show-missing --fail-under=80
+coverage-${PY} html --directory=coverage.report
 
 pylint --max-line-length=120 bun/*.py
 flake8 --max-line-length=120 bun/*.py

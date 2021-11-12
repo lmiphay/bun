@@ -2,8 +2,7 @@
 
 import time
 import unittest
-
-import mock
+import unittest.mock as mock
 
 from invoke import MockContext, Result
 
